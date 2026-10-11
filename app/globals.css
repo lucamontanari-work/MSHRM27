@@ -161,6 +161,104 @@ a {
   z-index: 1;
 }
 
+/* Global grain: every surface, Dust included, as in the layouts. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-image: var(--grain);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+/* ---------- Pictogram: sharp / depth / soft / rack ---------- */
+
+.symbol {
+  --symbol-fill: url("/gradients/gradient-20.jpg") center / cover, var(--accent-gradient);
+  --soft-blur: clamp(14px, 3.2vmin, 48px);
+  /* Depth of field: the side named here stays in focus. */
+  --depth-dir: to top;
+  position: relative;
+  aspect-ratio: var(--symbol-aspect);
+}
+
+.symbol__sharp,
+.symbol__shape {
+  position: absolute;
+  inset: 0;
+  background: var(--symbol-fill);
+  -webkit-mask: url("/brand/symbol.svg") center / 100% 100% no-repeat;
+  mask: url("/brand/symbol.svg") center / 100% 100% no-repeat;
+}
+
+/* Blur sits on the wrapper, so it softens the masked shape instead of being cut by it. */
+.symbol__soft {
+  position: absolute;
+  inset: 0;
+  filter: blur(var(--soft-blur));
+}
+
+.symbol--depth .symbol__sharp {
+  -webkit-mask:
+    url("/brand/symbol.svg") center / 100% 100% no-repeat,
+    linear-gradient(var(--depth-dir), #000 25%, transparent 70%);
+  -webkit-mask-composite: source-in;
+  mask:
+    url("/brand/symbol.svg") center / 100% 100% no-repeat,
+    linear-gradient(var(--depth-dir), #000 25%, transparent 70%);
+  mask-composite: intersect;
+}
+
+.symbol--depth .symbol__soft {
+  -webkit-mask: linear-gradient(var(--depth-dir), transparent 25%, #000 70%);
+  mask: linear-gradient(var(--depth-dir), transparent 25%, #000 70%);
+}
+
+/* Rack resting state: focus has already passed to the type. */
+.symbol--rack .symbol__sharp {
+  opacity: 0;
+}
+
+/* ---------- Gradient floor: light rising from below ---------- */
+
+.floor {
+  position: relative;
+  isolation: isolate;
+  --floor-min: 20%;
+  --floor-max: 65%;
+}
+
+.floor::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: calc(var(--floor-min) + (var(--floor-max) - var(--floor-min)) * var(--progress, 0.6));
+  background: var(--floor-fill);
+  pointer-events: none;
+}
+
+.floor--light {
+  --floor-fill: radial-gradient(
+    120% 100% at 35% 100%,
+    var(--flamingo) 0%,
+    var(--lilac) 45%,
+    rgb(179 145 236 / 0) 100%
+  );
+}
+
+.floor--dark {
+  --floor-min: 14%;
+  --floor-max: 32%;
+  --floor-fill: radial-gradient(
+    140% 100% at 50% 100%,
+    var(--sulphur) 0%,
+    var(--lilac) 45%,
+    rgb(179 145 236 / 0) 100%
+  );
+}
+
 /* ---------- Brand marks + Accento ---------- */
 
 .mark {
@@ -238,7 +336,7 @@ a {
   flex-direction: column;
   font-family: var(--font-display);
   font-weight: 400;
-  line-height: 0.92;
+  line-height: 0.84;
   letter-spacing: -0.02em;
 }
 
@@ -274,14 +372,8 @@ a {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(78vmin, 760px);
-  aspect-ratio: var(--symbol-aspect);
+  width: min(112vmin, 1100px);
   translate: -50% -50%;
-  background:
-    url("/gradients/gradient-20.jpg") center / cover,
-    var(--accent-gradient);
-  -webkit-mask: url("/brand/symbol.svg") center / 100% 100% no-repeat;
-  mask: url("/brand/symbol.svg") center / 100% 100% no-repeat;
 }
 
 .hero__title {
@@ -450,6 +542,16 @@ a {
   color: transparent;
 }
 
+.contact > * {
+  position: relative;
+}
+
+/* The floor reaches the footer: type there turns Coal, as on the layouts. */
+.contact .footer {
+  color: var(--coal);
+  border-top-color: color-mix(in srgb, var(--coal) 25%, transparent);
+}
+
 .footer {
   display: flex;
   align-items: center;
@@ -460,6 +562,71 @@ a {
 
 .footer__stamp {
   width: 40px;
+}
+
+/* ---------- Contesto ---------- */
+
+.context {
+  /* One stretch of scroll per case, plus the screen the stage sticks in. */
+  height: calc((var(--count) - 1) * 80svh + 100svh);
+}
+
+.context__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* The fixed mask: soft-edged pictogram. Work is sharp at the centre and
+   dissolves towards the edges of the shape. */
+.context__window {
+  position: relative;
+  width: min(92vmin, 880px);
+  aspect-ratio: var(--symbol-aspect);
+  overflow: hidden;
+  background: var(--lilac);
+  -webkit-mask: url("/brand/symbol-soft.svg") center / 100% 100% no-repeat;
+  mask: url("/brand/symbol-soft.svg") center / 100% 100% no-repeat;
+}
+
+.context__track {
+  position: absolute;
+  inset: 0 0 auto;
+  height: calc(100% * var(--count));
+  translate: 0 calc(var(--progress, 0) * (var(--count) - 1) / var(--count) * -100%);
+  will-change: translate;
+}
+
+.context__track img {
+  display: block;
+  width: 100%;
+  height: calc(100% / var(--count));
+  object-fit: cover;
+}
+
+.context__caption {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(24px, 6svh, 64px);
+  height: 1.5rem;
+  overflow: hidden;
+}
+
+.context__captions {
+  translate: 0 calc(var(--progress, 0) * (var(--count) - 1) / var(--count) * -100%);
+}
+
+.context__captions li {
+  height: 1.5rem;
+  line-height: 1.5rem;
+}
+
+.context__captions span {
+  opacity: 0.5;
+  margin-right: 0.75em;
 }
 
 /* ---------- Organism (persistent layer, Level 2) ---------- */
@@ -506,8 +673,35 @@ a {
     animation: symbol-arrive 2.4s var(--ease-reveal) both;
   }
 
+  /* Rack focus: sharp symbol fades out as its blurred twin fades in. */
+  html.js .hero__symbol .symbol__sharp {
+    animation: focus-out 1.8s var(--ease-reveal) 1.5s both;
+  }
+
+  html.js .hero__symbol .symbol__soft {
+    animation: focus-in 1.8s var(--ease-reveal) 1.5s both;
+  }
+
   html.js .hero__title {
-    animation: title-focus 2.2s var(--ease-reveal) 0.6s both;
+    animation: title-focus 2s var(--ease-reveal) 1.7s both;
+  }
+
+  @keyframes focus-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes focus-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes symbol-arrive {

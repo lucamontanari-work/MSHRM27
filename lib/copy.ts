@@ -49,6 +49,18 @@ export const clients = [
   "Decathlon",
 ] as const;
 
+// Contesto: case images passing behind the symbol mask.
+// DA DEFINIRE: all placeholders from the credential deck (low-res, mostly mood
+// images). Replace with 4–6 launch cases and high-res originals; check NDAs.
+// `client: null` = image not tied to a case yet, caption shows a placeholder.
+export const cases = [
+  { client: "Coppini Arte Olearia", image: "/work/placeholder-01.jpg" },
+  { client: null, image: "/work/placeholder-02.jpg" },
+  { client: null, image: "/work/placeholder-03.jpg" },
+  { client: null, image: "/work/placeholder-04.jpg" },
+  { client: null, image: "/work/placeholder-05.jpg" },
+] as const;
+
 // DA DEFINIRE: public contact address. The credential deck is in Italian and
 // in the old identity, so "Selected work" goes through email until the case pages exist.
 export const contactEmail = "hello@mshrm.it";

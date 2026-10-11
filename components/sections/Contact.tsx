@@ -4,7 +4,7 @@ import { contactEmail, mantra } from "@/lib/copy";
 
 export function Contact() {
   return (
-    <section className="contact" id="contact" aria-label="Contact">
+    <section className="contact floor floor--dark" id="contact" data-progress aria-label="Contact">
       <Staircase as="h2" lines={["get", "in touch"]} expo={[50, -80]} size="l" />
       <a className="cta contact__email" href={`mailto:${contactEmail}`}>
         {contactEmail}

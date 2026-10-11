@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { BrandDefs } from "@/components/brand/Mark";
 import { Organism } from "@/components/motion/Organism";
 import { RevealObserver } from "@/components/motion/RevealObserver";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { meta } from "@/lib/copy";
 import "./globals.css";
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <BrandDefs />
         <Organism />
         <RevealObserver />
+        <ScrollProgress />
         {children}
       </body>
     </html>

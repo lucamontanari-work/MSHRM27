@@ -1,5 +1,6 @@
 import { Claim } from "@/components/sections/Claim";
 import { Contact } from "@/components/sections/Contact";
+import { Context } from "@/components/sections/Context";
 import { Descriptor } from "@/components/sections/Descriptor";
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
@@ -18,6 +19,7 @@ export default function Home() {
         <Descriptor />
         <Pillars />
         <Claim />
+        <Context />
         <Work />
         <Contact />
       </main>
