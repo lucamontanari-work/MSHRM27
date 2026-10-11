@@ -1,0 +1,15 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+.env*.local
+.vercel
+
+# Exposure trial: not licensed for publication, stays local only.
+# Replace with licensed WOFF2 files and remove these lines.
+public/fonts/*Trial*
+
+# Local tooling
+.claude/
